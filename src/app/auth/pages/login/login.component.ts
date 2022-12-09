@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms'
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -22,11 +23,18 @@ export class LoginComponent {
     password: ['123456', [Validators.required, Validators.minLength(6)]],
   })
 
-  constructor( private fb: FormBuilder) { }
+  constructor(  private fb: FormBuilder,
+                private authService: AuthService) { }
 
   login(){
     console.log(this.miFormulario.value);
-    console.log(this.miFormulario.valid);
+    
+    const { email, password } = this.miFormulario.value
+
+    this.authService.login( email, password )
+      .subscribe(resp => {
+        console.log(resp)
+      })
   }
 
   
